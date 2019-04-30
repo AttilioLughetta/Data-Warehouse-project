@@ -1,0 +1,161 @@
+-- SEQUENCE: public."Day_idDay_seq"
+
+-- DROP SEQUENCE public."Day_idDay_seq";
+
+CREATE SEQUENCE public."Day_idDay_seq";
+
+ALTER SEQUENCE public."Day_idDay_seq"
+    OWNER TO postgres;
+
+-- SEQUENCE: public."Space_idSpace_seq"
+
+-- DROP SEQUENCE public."Space_idSpace_seq";
+
+CREATE SEQUENCE public."Space_idSpace_seq";
+
+ALTER SEQUENCE public."Space_idSpace_seq"
+    OWNER TO postgres;
+
+-- Table: public."Day"
+
+-- DROP TABLE public."Day";
+
+CREATE TABLE public."Day"
+(
+    "idDay" bigint NOT NULL DEFAULT nextval('"Day_idDay_seq"'::regclass),
+    "Day" date,
+    "Month" text COLLATE pg_catalog."default",
+    "Year" text COLLATE pg_catalog."default",
+    CONSTRAINT "idDay_pkey" PRIMARY KEY ("idDay")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Day"
+    OWNER to postgres;
+
+-- Table: public."Space"
+
+-- DROP TABLE public."Space";
+
+CREATE TABLE public."Space"
+(
+    "idSpace" bigint NOT NULL DEFAULT nextval('"Space_idSpace_seq"'::regclass),
+    osm_id bigint,
+    "StreetName" text COLLATE pg_catalog."default",
+    highway text COLLATE pg_catalog."default",
+    "Point" geometry,
+    CONSTRAINT "Space_pkey" PRIMARY KEY ("idSpace")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Space"
+    OWNER to postgres;
+
+-- Table: public."Time"
+
+-- DROP TABLE public."Time";
+
+CREATE TABLE public."Time"
+(
+    "Second" bigint NOT NULL,
+    "Minute" bigint,
+    "Hour" smallint,
+    CONSTRAINT "Time_pkey" PRIMARY KEY ("Second")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Time"
+    OWNER to postgres;
+
+-- Table: public."Distance"
+
+-- DROP TABLE public."Distance";
+
+CREATE TABLE public."Distance"
+(
+    "10Km" double precision NOT NULL,
+    "100km" bigint,
+    "1000km" bigint,
+    CONSTRAINT "Distance_pkey" PRIMARY KEY ("10Km")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Distance"
+    OWNER to postgres;
+
+-- Table: public."Detections"
+
+-- DROP TABLE public."Detections";
+
+CREATE TABLE public."Detections"
+(
+    "idDate" bigint,
+    "Relative" bigint,
+    "CO concentration	" real,
+    "CO2 concentration	" real,
+    "NOx concentration	" real,
+    "H2O conc.	" real,
+    "A/F	" real,
+    "Exh. Flow corr	[m3/m]" real,
+    "Exh. Flow corr[m3/s]	" real,
+    "Exh. Temp.	" real,
+    "Exh. Press.	" real,
+    "Amb. Temp.	" real,
+    "Amb. Press.	" real,
+    "Amb. Humid." real,
+    "Battery	" real,
+    "CO mass	" double precision,
+    "CO2 mass	" double precision,
+    "NOx mass	" double precision,
+    "Fuel	" double precision,
+    "Power	" double precision,
+    "Speed	" real,
+    "Voltage	" double precision,
+    "Engine coolant temperature by ECU	" bigint,
+    "Engine RPM by ECU	" real,
+    "Vehicle speed by ECU[km/h]	" real,
+    "Vehicle speed by ECU[m/s]	" real,
+    "Distance 	" real,
+    "Intake air temperature by ECU	" real,
+    "MAF air flow rate by ECU[gr\s]	" double precision,
+    "MAF air flow rate by ECU[m3\s]" double precision,
+    "Fuel rail pressure (diesel) by ECU" real,
+    "Barometric pressure by ECU" real,
+    "Ambient air temperature by ECU" real,
+    "idPoint" bigint,
+    CONSTRAINT "Day_FK" FOREIGN KEY ("idDate")
+        REFERENCES public."Day" ("idDay") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT "Distance_FK" FOREIGN KEY ("Distance 	")
+        REFERENCES public."Distance" ("10Km") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT "Relative_FK" FOREIGN KEY ("Relative")
+        REFERENCES public."Time" ("Second") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT "Space_FK" FOREIGN KEY ("idPoint")
+        REFERENCES public."Space" ("idSpace") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Detections"
+    OWNER to postgres;
