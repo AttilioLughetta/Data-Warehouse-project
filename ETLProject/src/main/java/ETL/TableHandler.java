@@ -28,8 +28,9 @@ public  class TableHandler{
         tt=new TemporaryTableDAO();
         tt.dropAndCreateTable(name);
         
-
+        //Metodo per creare dal file Excel un file CSV
         //ExcelManager.excelToCSV(s,pathCSV, name);
+        ExcelManager.excelToBigCSV(s, pathCSV, name, 35);
         System.out.println("Table Created");
         addColoumn(s,name,db);
         System.out.println("Coloumns Added, filling Table");
@@ -46,6 +47,8 @@ public  class TableHandler{
     public static void addColoumn(XSSFSheet sheet, String name, DBHandler db){
         String tipo = " VARCHAR(50)";     
         Iterator<Row> itr = sheet.iterator();
+        //Introduco Attributo Test-ID
+        tt.addColumn(name, "TestID", "integer");
         
         if(itr.hasNext()){
             Row riga = itr.next();

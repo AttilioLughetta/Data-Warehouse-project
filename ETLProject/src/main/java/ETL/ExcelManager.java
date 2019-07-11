@@ -6,13 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
+
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +40,7 @@ public class ExcelManager {
         return sheet;
     }
 
-    public static void excelToCSV(XSSFSheet sheet, String path, String name){
+    public static void excelToCSV(XSSFSheet sheet, String path, String name, Integer times){
         //HEADER 
       
       List <String> l = new LinkedList<>();
@@ -45,7 +50,8 @@ public class ExcelManager {
       CSVPrinter csvPrinter = null;
       try {
             
-              BufferedWriter writer = Files.newBufferedWriter(Paths.get(path));
+              BufferedWriter writer = Files.newBufferedWriter(Paths.get(path),StandardOpenOption.APPEND, 
+              StandardOpenOption.CREATE);
   
               csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT/*.withHeader((String[])l.toArray())*/);
                
@@ -72,15 +78,13 @@ public class ExcelManager {
             
             boolean step=false;
             l.clear();
+            l.add(times.toString());
             Row riga = itr.next();
             DataFormatter df = new DataFormatter() ;
             String str;
-            Iterator<Cell> Citr= riga.cellIterator();
             int num =0 ;
            
-           // while(Citr.hasNext()&& !step)
-             //   {
-               //     Cell cell = Citr.next();
+
                for(int i=0; i<riga.getLastCellNum(); i++) {
                     Cell cell = riga.getCell(i, Row.CREATE_NULL_AS_BLANK);  
                     num++;
@@ -119,7 +123,11 @@ public class ExcelManager {
                                           break;
                                         }
                                     java.util.Date d = cell.getDateCellValue();
-                                    l.add( "'"+"2019"+"-"+d.getMonth()+ "-15"+" " + d.getHours()+":"+d.getMinutes()+":"+d.getSeconds() +"'");
+                                    Calendar c = Calendar.getInstance();
+                                    c.setTime(d);
+                                    c.add(Calendar.DATE,times);
+                                    d= c.getTime();
+                                    l.add( "'"+"2019"+"-"+(d.getMonth()+1)+ "-"+d.getDate()+" " + d.getHours()+":"+d.getMinutes()+":"+d.getSeconds() +"'");
                                 }else{
                                     //Number Case
                                     str = df.formatCellValue(cell).trim();
@@ -140,7 +148,6 @@ public class ExcelManager {
                                 
                                 str = df.formatCellValue(cell);
                                 //NapoliDB.
-                                //qui
                                 if(num == 15|| num == 16)
                                 {
                                     Float a  = (Float)MyETL.convertCoordinate(str);
@@ -154,7 +161,8 @@ public class ExcelManager {
                             }
                           }
                         }
-                    }
+                      }
+                    
             
             if(!step)
             {
@@ -183,7 +191,12 @@ public class ExcelManager {
     
       }
 
+public static void excelToBigCSV(XSSFSheet sheet, String path, String name, int times){
+  for(int i=1;i<times;i++)
+    ExcelManager.excelToCSV(sheet,path, name, i);
 
+  return;
+}
 
 
 }
