@@ -63,14 +63,12 @@ public class NapoliDB extends DBHandler{
 
 public static String coordinatecoloumn ( int num, String str)
 {
- if(num == 15|| num == 16)
-                                {
-                                    Float a  = (Float)MyETL.convertCoordinate(str);
-                                    str = a.toString();
-                                    return str;
-                                }
-else 
-    return str;
+    if(num == 15|| num == 16) {
+        Float a  = (Float)MyETL.convertCoordinate(str);
+        str = a.toString();
+        return str;
+    } else
+        return str;
 }
 
 //Controllo consistenza
