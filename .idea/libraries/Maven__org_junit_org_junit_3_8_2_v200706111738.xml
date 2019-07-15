@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.junit:org.junit:3.8.2.v200706111738">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/org.junit/3.8.2.v200706111738/org.junit-3.8.2.v200706111738.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/org.junit/3.8.2.v200706111738/org.junit-3.8.2.v200706111738-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/org.junit/3.8.2.v200706111738/org.junit-3.8.2.v200706111738-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

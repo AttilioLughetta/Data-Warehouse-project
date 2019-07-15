@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Utente
+ * Importa la mappa contenuta in tool\map.osm nel database
  */
 public class ImportMap {
     public static void main(String[] args){

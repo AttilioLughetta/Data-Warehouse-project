@@ -97,6 +97,8 @@ ALTER TABLE public."Distance"
 
 -- Table: public."Detections"
 
+-- Table: public."Detections"
+
 -- DROP TABLE public."Detections";
 
 CREATE TABLE public."Detections"
@@ -135,8 +137,9 @@ CREATE TABLE public."Detections"
     "Barometric pressure by ECU" real,
     "Ambient air temperature by ECU" real,
     "idPoint" bigint,
+    "idTest" bigint,
     CONSTRAINT "Day_FK" FOREIGN KEY ("idDate")
-        REFERENCES public."Day" ("idDay") MATCH SIMPLE
+        REFERENCES public."Day" ("idDate") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
     CONSTRAINT "Distance_FK" FOREIGN KEY ("Distance 	")

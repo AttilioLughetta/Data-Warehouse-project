@@ -14,6 +14,4 @@ public  abstract class DBHandler{
     public abstract String specialAttributesHandler(int n);
     public abstract void initMandatory();
 
-
-
 }

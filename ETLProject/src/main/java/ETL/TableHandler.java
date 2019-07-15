@@ -2,7 +2,6 @@ package ETL;
 
 import DAO.Concrete.TemporaryTableDAO;
 
-import java.sql.Statement;
 import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -11,19 +10,17 @@ import org.apache.poi.xssf.usermodel.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import java.sql.Connection;
 
 
 public  class TableHandler{
     
-    private static TemporaryTableDAO tt=null;
+    private static TemporaryTableDAO tt = null;
 
-    public static void CreateTable(String name, String path, int page, DBHandler db, String pathCSV) throws Exception
-    {
+    public static void CreateTable(String name, String path, int page, DBHandler db, String pathCSV) throws Exception {
 
         db.initAll();
         
-        XSSFSheet s= null;
+        XSSFSheet s = null;
         s= ExcelManager.openSheet(path, page);
         tt=new TemporaryTableDAO();
         tt.dropAndCreateTable(name);
@@ -37,9 +34,6 @@ public  class TableHandler{
         if(tt.csvToTable(name,pathCSV))
             System.out.println("Table correctly filled");
         //fieldingTable(s, c, name);
-        
-       
-        
         
     }
 
@@ -56,7 +50,7 @@ public  class TableHandler{
             Row tmpr = itr.next();
             int num = 0;
                 //itero le colonne
-            Iterator<Cell> Citr= riga.cellIterator();
+            Iterator<Cell> Citr = riga.cellIterator();
             Iterator<Cell> tmpc = tmpr.cellIterator();
             while(Citr.hasNext()){
                     if(!Citr.hasNext()){
@@ -98,8 +92,8 @@ public  class TableHandler{
             Row riga = itr.next();
             DataFormatter df = new DataFormatter() ;
             String str=null;
-            Iterator<Cell> Citr= riga.cellIterator();
-            int num =0 ;
+            Iterator<Cell> Citr = riga.cellIterator();
+            int num = 0 ;
             numx++;
             while(Citr.hasNext()&& !step){
                 Cell cell = Citr.next();
@@ -147,27 +141,5 @@ public  class TableHandler{
             }                
         }
     }
-
-    public static boolean csvToTable(String name, String path, Connection c)
-    {
-        try{
-            Statement stmt = c.createStatement();
-            String sql = "COPY "+name+" FROM '"+path+"'WITH (format csv, header);";
-            stmt.executeUpdate(sql);
-            stmt.close();
-            }
-        catch(Exception e)
-            {
-                System.err.println("Row not added from CSV");
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-    }
-    
-    
-
-
-
 
 }
