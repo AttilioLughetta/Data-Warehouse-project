@@ -198,5 +198,18 @@ public static void excelToBigCSV(XSSFSheet sheet, String path, String name, int 
   return;
 }
 
+public static void excelToManyCSV(XSSFSheet sheet, String path, String name, int number)
+  {
+    String path2 = path.subSequence(0,path.length()-4).toString();
+    for( int t=1;t<=number ;t++ )
+    {
+      path = path2+t+".csv";
+      int times = (int) (Math.pow(10, t-1));
+      for(int i=1;i<=times;i++)
+        ExcelManager.excelToCSV(sheet,path, name, i);
+    }
+  }
+
+
 
 }

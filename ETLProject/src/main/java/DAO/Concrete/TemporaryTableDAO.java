@@ -91,4 +91,17 @@ public class TemporaryTableDAO{
             }
             return true;
     }
+
+    public static boolean manyCsvToTable(String name, int number, String path)
+    {
+        String path2 = path.subSequence(0,path.length()-4).toString(); 
+        for(int i= 1; i<=number;i++)
+            {
+                path = path2+i+".csv";
+                if(!csvToTable(name, path))
+                    return false;
+            }
+        return true;
+        
+    }
 }

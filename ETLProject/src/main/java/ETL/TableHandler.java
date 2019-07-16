@@ -27,12 +27,14 @@ public  class TableHandler{
         
         //Metodo per creare dal file Excel un file CSV
         //ExcelManager.excelToCSV(s,pathCSV, name);
-        ExcelManager.excelToBigCSV(s, pathCSV, name, 35);
+        //ExcelManager.excelToBigCSV(s, pathCSV, name, 35);
+        ExcelManager.excelToManyCSV(s, pathCSV, name, 3);
         System.out.println("Table Created");
         addColoumn(s,name,db);
         System.out.println("Coloumns Added, filling Table");
-        if(tt.csvToTable(name,pathCSV))
-            System.out.println("Table correctly filled");
+        //if(tt.csvToTable(name,pathCSV))
+        if(tt.manyCsvToTable(name, 3, pathCSV))
+        System.out.println("Table correctly filled");
         //fieldingTable(s, c, name);
         
     }
