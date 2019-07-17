@@ -5,10 +5,12 @@
  */
 package DAO.Concrete;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +57,21 @@ public class TemporaryTableDAO{
         }
         return true;
     }
+    public static boolean dataDispatch()
+    {   
+        boolean b = false;
+        CallableStatement cstmt;
+        try {
+            cstmt = connection.prepareCall("{? = CALL finish_inserting()}");
+            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt.executeUpdate();
+            b = cstmt.getBoolean(1);
+        } catch (SQLException e) {
+            System.err.println("impossible to execute finish_inserting() ");
+            e.printStackTrace();
+        }
+        return b;
+    }
     
     public boolean insertValues(String tablename,Queue<String> parameters){
         String sql="INSERT INTO "+tablename+" VALUES ( ";
@@ -82,10 +99,11 @@ public class TemporaryTableDAO{
             String sql = "COPY "+name+" FROM '"+path+"'WITH (format csv, header);";
             stmt.executeUpdate(sql);
             stmt.close();
+            dataDispatch();
             }
         catch(Exception e)
             {
-                System.err.println("Row not added from CSV");
+                System.err.println("CSV not added to DB");
                 e.printStackTrace();
                 return false;
             }
