@@ -37,8 +37,10 @@ public  class TableHandler{
         addColoumn(s,name,db);
         System.out.println("Coloumns Added, filling Table");
         //if(tt.csvToTable(name,pathCSV))
+        tt.enableIndexes(false);
         if(tt.manyCsvToTable(name, 3, pathCSV))
         System.out.println("Table correctly filled");
+        tt.enableIndexes(true);
         //fieldingTable(s, c, name);
         
     }
