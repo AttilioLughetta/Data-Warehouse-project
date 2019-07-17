@@ -35,7 +35,7 @@ public class TemporaryTableDAO{
         Statement stmt;
         try {
             stmt = connection.createStatement();
-            String sql = "DROP TABLE "+ name+"; CREATE TABLE "+name+" ();"; 
+            String sql = "DROP TABLE IF EXISTS "+ name+"; CREATE TABLE "+name+" ();"; 
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException ex) {
@@ -110,12 +110,17 @@ public class TemporaryTableDAO{
 
     public static boolean csvToTable(String name, String path)
     {
+        long endTime, startTime, totTime;
         try{
             Statement stmt = connection.createStatement();
+            startTime = System.currentTimeMillis();
             String sql = "COPY "+name+" FROM '"+path+"'WITH (format csv, header);";
             stmt.executeUpdate(sql);
             stmt.close();
             dataDispatch();
+            endTime = System.currentTimeMillis();
+            totTime = endTime - startTime;
+            System.out.println("Tempo totale impiegato "+ totTime);
             }
         catch(Exception e)
             {
@@ -131,6 +136,7 @@ public class TemporaryTableDAO{
         String path2 = path.subSequence(0,path.length()-4).toString(); 
         for(int i= 1; i<=number;i++)
             {
+                System.out.println("Inserimento file csv numero "+i);
                 path = path2+i+".csv";
                 if(!csvToTable(name, path))
                     return false;

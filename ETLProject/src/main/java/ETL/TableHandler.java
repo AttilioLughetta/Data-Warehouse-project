@@ -40,7 +40,7 @@ public  class TableHandler{
         tt.enableIndexes(false);
         if(tt.manyCsvToTable(name, 3, pathCSV))
         System.out.println("Table correctly filled");
-        tt.enableIndexes(true);
+        //tt.enableIndexes(true);
         //fieldingTable(s, c, name);
         
     }
