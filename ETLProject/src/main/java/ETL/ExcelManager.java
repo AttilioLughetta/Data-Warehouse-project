@@ -91,6 +91,7 @@ public class ExcelManager {
                     if(!MyETL.isToIgnore(num)) {
                         if(num==1)
                           {
+                            
                             if(cell.getNumericCellValue()==0){
                               System.err.println("Date not added");
                               break;
@@ -200,6 +201,7 @@ public static void excelToBigCSV(XSSFSheet sheet, String path, String name, int 
 
 public static void excelToManyCSV(XSSFSheet sheet, String path, String name, int number)
   {
+    System.out.println("Creating CSVs");
     String path2 = path.subSequence(0,path.length()-4).toString();
     for( int t=1;t<=number ;t++ )
     {
@@ -208,6 +210,7 @@ public static void excelToManyCSV(XSSFSheet sheet, String path, String name, int
       for(int i=1;i<=times;i++)
         ExcelManager.excelToCSV(sheet,path, name, i);
     }
+    System.out.println("CSVs Created");
   }
 
 

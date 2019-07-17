@@ -56,7 +56,7 @@ public class MyETL{
     public static float convertCoordinate(String coordinate){
        float degree=0;
        coordinate=coordinate.substring(1);
-       System.out.println(coordinate);
+       //System.out.println(coordinate);
        String[] values = coordinate.split("\\.");
        for(int i=0;i<values.length-1;i++){
            degree=(float) (degree+(Float.parseFloat(values[i])/pow(60,i)));

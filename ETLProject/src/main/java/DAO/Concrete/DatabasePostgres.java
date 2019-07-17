@@ -55,7 +55,7 @@ public class DatabasePostgres {
                 Driver driver= (Driver) driverClass.newInstance();
                 connection= DriverManager.getConnection(databaseURL,u,p);
                 createExtensions();
-                System.out.println("Connessione stabilita");
+                System.out.println("Connection Established");
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(DatabasePostgres.class.getName()).log(Level.SEVERE, null, ex);
             }

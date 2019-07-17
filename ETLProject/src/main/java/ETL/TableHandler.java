@@ -17,19 +17,23 @@ public  class TableHandler{
     private static TemporaryTableDAO tt = null;
 
     public static void CreateTable(String name, String path, int page, DBHandler db, String pathCSV) throws Exception {
-
+        
         db.initAll();
         
         XSSFSheet s = null;
         s= ExcelManager.openSheet(path, page);
         tt=new TemporaryTableDAO();
         tt.dropAndCreateTable(name);
-        
-        //Metodo per creare dal file Excel un file CSV
-        //ExcelManager.excelToCSV(s,pathCSV, name);
-        //ExcelManager.excelToBigCSV(s, pathCSV, name, 35);
-        ExcelManager.excelToManyCSV(s, pathCSV, name, 3);
         System.out.println("Table Created");
+        
+        
+        //ExcelManager.excelToCSV(s,pathCSV, name);
+        
+        
+        //ExcelManager.excelToBigCSV(s, pathCSV, name, 35);
+        
+        ExcelManager.excelToManyCSV(s, pathCSV, name, 3);
+        
         addColoumn(s,name,db);
         System.out.println("Coloumns Added, filling Table");
         //if(tt.csvToTable(name,pathCSV))
