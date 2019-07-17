@@ -1,0 +1,66 @@
+--VISTA MATERIALIZZATA QUERY 1 
+
+-- DROP MATERIALIZED VIEW IF EXISTS QUERY1;
+CREATE MATERIALIZED VIEW QUERY1 AS
+SELECT h."Second", AVG(d."CO concentration	") AS co_conc,AVG(d."CO2 concentration	")AS co2_conc, AVG(d."NOx concentration	")AS nox_conc, AVG(d."H2O conc.	")AS h2o_conc,AVG(d."CO mass	")AS co_mass,AVG( d."CO2 mass	")AS co2_mass, AVG(d."NOx mass	")AS nox_mass, AVG(d."Fuel	")AS fuel
+	FROM public."Detections" D, public."Time" h
+	where d."Relative"=h."Second"
+	GROUP BY h."Second"
+	ORDER BY h."Second";
+
+--VISTA MATERIALIZZATA QUERY 2
+
+--DROP MATERIALIZED VIEW IF EXISTS QUERY2;
+CREATE MATERIALIZED VIEW QUERY2 AS
+SELECT s."highway",d."idTest", AVG(d."Power	")AS pow, AVG(d."Speed	")AS speed, AVG(d."Voltage	")AS voltage,AVG(d."Battery	") AS battery
+	FROM public."Detections" d, public."Space" s
+	WHERE d."idPoint"=s."idSpace"
+	GROUP BY s."highway",d."idTest" 
+	ORDER BY s."highway",d."idTest";
+
+--VISTA MATERIALIZZATA QUERY 3
+
+--DROP MATERIALIZED VIEW IF EXISTS QUERY3;
+CREATE MATERIALIZED VIEW QUERY3 AS
+SELECT s."highway" AS highway,h."10Km" AS distance, AVG(d."Exh. Temp.	")AS exh_temp, AVG(d."Fuel	") AS fuel
+	FROM public."Detections" d, public."Distance" h, public."Space" s
+	WHERE d."Distance 	"=h."10Km" AND d."idPoint"=s."idSpace"
+	GROUP BY s."highway",h."10Km"
+	ORDER BY s."highway",h."10Km";
+
+--VISTA MATERIALIZZATA QUERY 4
+
+--DROP MATERIALIZED VIEW IF EXISTS QUERY4;
+CREATE MATERIALIZED VIEW QUERY4 AS
+SELECT d."Day",d."Month",d."Year",h."Second",AVG(f."Engine coolant temperature by ECU	") AS engine_coolant_temp_ECU, AVG(f."Engine RPM by ECU	") AS engine_rpm_ECU, AVG(f."Vehicle speed by ECU[km/h]	") AS speed_kmh_ECU, AVG(f."Vehicle speed by ECU[m/s]	") AS speed_ms_ECU, AVG(f."Intake air temperature by ECU	") AS air_temp_ECU, AVG(f."MAF air flow rate by ECU[gr\s]	") AS air_flow_rate_grs_ECU, AVG(f."MAF air flow rate by ECU[m3\s]") AS air_flow_rate_m3s_ECU, AVG(f."Fuel rail pressure (diesel) by ECU") AS fuel_rail_ECU, AVG(f."Barometric pressure by ECU") AS barometric_pressure_ECU, AVG(f."Ambient air temperature by ECU") AS ambient_air_ECU
+	FROM public."Detections" f,public."Time" h,public."Day" d
+	WHERE f."Relative"=h."Second" AND f."idDay"=d."idDay"
+	GROUP BY d."Day",d."Month",d."Year",h."Second"
+	ORDER BY d."Day",d."Month",d."Year",h."Second";
+
+--VISTA MATERIALIZZATA QUERY 5
+
+--DROP MATERIALIZED VIEW IF EXISTS QUERY5;
+CREATE MATERIALIZED VIEW QUERY5 AS
+SELECT s."StreetName",d."100km",AVG(f."Engine coolant temperature by ECU	") AS engine_coolant_temp_ECU, AVG(f."Engine RPM by ECU	") AS engine_rpm_ECU, AVG(f."Vehicle speed by ECU[km/h]	") AS speed_kmh_ECU, AVG(f."Vehicle speed by ECU[m/s]	") AS speed_ms_ECU, AVG(f."Intake air temperature by ECU	") AS air_temp_ECU, AVG(f."MAF air flow rate by ECU[gr\s]	") AS air_flow_rate_grs_ECU, AVG(f."MAF air flow rate by ECU[m3\s]") AS air_flow_rate_m3s_ECU, AVG(f."Fuel rail pressure (diesel) by ECU") AS fuel_rail_ECU, AVG(f."Barometric pressure by ECU") AS barometric_pressure_ECU, AVG(f."Ambient air temperature by ECU") AS ambient_air_ECU
+	FROM public."Detections" f, public."Distance" d, public."Space" s
+	WHERE f."Distance 	"=d."10Km" AND f."idPoint"=s."idSpace"
+	GROUP BY s."osm_id",s."StreetName",d."100km"
+	ORDER BY s."StreetName",d."100km";
+
+--VISTA MATERIALIZZATA QUERY 6
+
+--DROP MATERIALIZED VIEW IF EXISTS QUERY6;
+CREATE MATERIALIZED VIEW QUERY6 AS
+SELECT d."Day",d."Month",d."Year",AVG(f."A/F	") AS af, AVG(f."Exh. Flow corr[m3/m]") AS exh_flow_corr_m3m, AVG(f."Exh. Flow corr[m3/s]") AS exh_flow_corr_m3s, AVG(f."Exh. Temp.	") AS exh_temp, AVG(f."Exh. Press.") AS exh_press, AVG(f."Amb. Temp. ")AS amb_temp, AVG(f."Amb. Press.")AS amb_press, AVG(f."Amb. Humid.") AS amb_humid
+	FROM public."Detections" f,public."Day" d
+	WHERE f."idDay"=d."idDay"
+	GROUP BY d."Day",d."Month",d."Year"
+	ORDER BY d."Day",d."Month",d."Year";
+
+REFRESH MATERIALIZED VIEW QUERY1;
+REFRESH MATERIALIZED VIEW QUERY2;
+REFRESH MATERIALIZED VIEW QUERY3;
+REFRESH MATERIALIZED VIEW QUERY4;
+REFRESH MATERIALIZED VIEW QUERY5;
+REFRESH MATERIALIZED VIEW QUERY6;

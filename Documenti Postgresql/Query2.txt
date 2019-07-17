@@ -1,0 +1,11 @@
+--Query 2 Generica
+EXPLAIN ANALYZE
+SELECT s."highway",d."idTest", AVG(d."Power	")AS pow, AVG(d."Speed	")AS speed, AVG(d."Voltage	")AS voltage,AVG(d."Battery	") AS battery
+	FROM public."Detections" d, public."Space" s
+	WHERE d."idPoint"=s."idSpace"
+	GROUP BY s."highway",d."idTest" 
+	ORDER BY s."highway",d."idTest";
+
+--Query 2 con Vista Materializzata
+EXPLAIN ANALYZE
+SELECT * FROM QUERY2;

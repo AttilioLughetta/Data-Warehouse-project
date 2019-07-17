@@ -1,0 +1,11 @@
+--Query 5 Generalizzata
+EXPLAIN ANALYZE
+SELECT s."StreetName",d."100km",AVG(f."Engine coolant temperature by ECU	") AS engine_coolant_temp_ECU, AVG(f."Engine RPM by ECU	") AS engine_rpm_ECU, AVG(f."Vehicle speed by ECU[km/h]	") AS speed_kmh_ECU, AVG(f."Vehicle speed by ECU[m/s]	") AS speed_ms_ECU, AVG(f."Intake air temperature by ECU	") AS air_temp_ECU, AVG(f."MAF air flow rate by ECU[gr\s]	") AS air_flow_rate_grs_ECU, AVG(f."MAF air flow rate by ECU[m3\s]") AS air_flow_rate_m3s_ECU, AVG(f."Fuel rail pressure (diesel) by ECU") AS fuel_rail_ECU, AVG(f."Barometric pressure by ECU") AS barometric_pressure_ECU, AVG(f."Ambient air temperature by ECU") AS ambient_air_ECU
+	FROM public."Detections" f, public."Distance" d, public."Space" s
+	WHERE f."Distance 	"=d."10Km" AND f."idPoint"=s."idSpace"
+	GROUP BY s."osm_id",s."StreetName",d."100km"
+	ORDER BY s."StreetName",d."100km";
+
+--Query 5 con Vista Materializzata
+EXPLAIN ANALYZE
+SELECT * FROM QUERY5;

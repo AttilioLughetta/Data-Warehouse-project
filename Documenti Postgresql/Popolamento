@@ -1,0 +1,61 @@
+CREATE OR REPLACE FUNCTION finish_inserting() RETURNS VOID AS $$
+DECLARE
+	tmp_idSpace	bigint;
+	tmp_idDay	bigint;
+rc refcursor;
+curs CURSOR FOR(SELECT * FROM public."tabella"); --serve una tabella con solo i dati del csv
+
+BEGIN
+FOR rc IN curs LOOP
+	--Inserting into Distance hierarchy
+	IF NOT EXISTS  (SELECT * 
+					FROM public."Distance" D
+					WHERE D."10Km" = rc.distance_) THEN		
+			INSERT INTO public."Distance"("10Km", "100km", "1000km")
+					VALUES (CAST(rc.distance_ as double precision),CAST(trunc(rc.distance_/10) as bigint), CAST(trunc(rc.distance_/100) as bigint));
+	END IF;
+	
+	--Inserting into Time hierarchy
+	IF NOT EXISTS  (SELECT * 
+					FROM public."Time" T
+					WHERE T."Second"=CAST(rc.relative as integer)) THEN		
+			INSERT INTO public."Time"("Second", "Minute", "Hour")
+					VALUES (CAST(rc.relative as bigint),CAST(trunc(rc.relative/60) as bigint), CAST(trunc(rc.relative/3600) as smallint));
+	END IF;
+																									
+	--Inserting into Day hierarchy
+	IF NOT EXISTS	(SELECT * 
+					 FROM public."Day" D
+					 WHERE D."Day"=rc.absolute) THEN		
+			INSERT INTO public."Day"("Day", "Month", "Year")
+				VALUES (rc.absolute, EXTRACT(MONTH FROM rc.absolute), EXTRACT(YEAR FROM rc.absolute))
+			RETURNING public."Day"."idDay" INTO tmp_idDay;
+	ELSE
+			SELECT D."idDay" INTO tmp_idDay
+			FROM public."Day" D
+			WHERE D."Day"=rc.absolute;
+	END IF;
+															
+	--Inserting into Space Hierarchy
+	IF NOT EXISTS	(SELECT * 
+					 FROM public."Space" S
+					 WHERE S."Point"=ST_MakePoint(rc.longitude, rc.latitude, rc.altitude)) THEN		
+			INSERT INTO public."Space"(osm_id, "StreetName", highway, "Point")
+							(SELECT L.osm_id, L.name, L.highway, ST_MakePoint(rc.longitude, rc.latitude, rc.altitude)
+						    FROM public.planet_osm_line L
+						   	WHERE ST_DWITHIN(ST_SETSRID(ST_MAKEPOINT(rc.longitude, rc.latitude, rc.altitude),4326),L.way,1000)
+							ORDER BY ST_DISTANCE(ST_SETSRID(ST_MAKEPOINT(rc.longitude, rc.latitude, rc.altitude),4326),L.way) ASC
+							LIMIT 1)
+					RETURNING public."Space"."idSpace" INTO tmp_idSpace;
+	ELSE
+			SELECT S."idSpace" INTO tmp_idSpace
+			FROM public."Space" S
+			WHERE S."Point"=ST_MakePoint(rc.longitude, rc.latitude, rc.altitude);
+	END IF;
+	
+	--Inserting into Detections
+	INSERT INTO public."Detections"("idTest", "idDay", "Relative", "CO concentration	", "CO2 concentration	", "NOx concentration	", "H2O conc.	", "A/F	", "Exh. Flow corr[m3/s]", "Exh. Temp.	", "Exh. Press.", "Amb. Temp. ", "Amb. Press.", "Amb. Humid.", "Battery	", "CO mass	", "CO2 mass	", "NOx mass	", "Fuel	", "Power	", "Speed	", "Voltage	", "Engine coolant temperature by ECU	", "Engine RPM by ECU	", "Vehicle speed by ECU[km/h]	", "Vehicle speed by ECU[m/s]	", "Distance 	", "Intake air temperature by ECU	", "MAF air flow rate by ECU[gr\s]	", "MAF air flow rate by ECU[m3\s]", "Fuel rail pressure (diesel) by ECU", "Barometric pressure by ECU", "Ambient air temperature by ECU", "idPoint")
+	VALUES (rc.testid,tmp_idDay, rc.relative, rc.co_concentration, rc.co2_concentration, rc.nox_concentration, rc.h2o_conc, rc.a_f, rc.exh_flow_corrm3, rc.exh_temp, rc.exh_press, rc.amb_temp, rc.amb_press, rc.amb_humid, rc.battery, rc.co_mass, rc.co2_mass, rc.nox_mass, rc.fuel, rc.power, rc.speed, rc.voltage, rc.engine_coolant_temperature_by_ecu, rc.engine_rpm_by_ecu, rc.vehicle_speed_by_ecu_km, rc.vehicle_speed_by_ecu, rc.distance_, rc.intake_air_temperature_by_ecu, rc.maf_air_flow_rate_by_ecu_grams_per_second, rc.maf_air_flow_rate_by_ecu, rc.fuel_rail_pressure__diesel__by_ecu, rc.barometric_pressure_by_ecu, rc.ambient_air_temperature_by_ecu, tmp_idSpace);
+
+END LOOP;
+END; $$ language plpgsql

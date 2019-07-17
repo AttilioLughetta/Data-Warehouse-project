@@ -1,0 +1,44 @@
+--QUERY 1 Generica Second
+EXPLAIN ANALYZE
+SELECT h."Second", AVG(d."CO concentration	") AS co_conc,AVG(d."CO2 concentration	")AS co2_conc, AVG(d."NOx concentration	")AS nox_conc, AVG(d."H2O conc.	")AS h2o_conc,AVG(d."CO mass	")AS co_mass,AVG( d."CO2 mass	")AS co2_mass, AVG(d."NOx mass	")AS nox_mass, AVG(d."Fuel	")AS fuel
+	FROM public."Detections" D, public."Time" h
+	where d."Relative"=h."Second"
+	GROUP BY h."Second"
+	ORDER BY h."Second";
+
+--QUERY 1 Generica Minute
+EXPLAIN ANALYZE
+SELECT h."Minute", AVG(d."CO concentration	") AS co_conc,AVG(d."CO2 concentration	")AS co2_conc, AVG(d."NOx concentration	")AS nox_conc, AVG(d."H2O conc.	")AS h2o_conc,AVG(d."CO mass	")AS co_mass,AVG( d."CO2 mass	")AS co2_mass, AVG(d."NOx mass	")AS nox_mass, AVG(d."Fuel	")AS fuel
+	FROM public."Detections" D, public."Time" h
+	where d."Relative"=h."Second"
+	GROUP BY h."Minute"
+	ORDER BY h."Minute";
+
+--QUERY 1 Generica Hour
+EXPLAIN ANALYZE
+SELECT h."Hour", AVG(d."CO concentration	") AS co_conc,AVG(d."CO2 concentration	")AS co2_conc, AVG(d."NOx concentration	")AS nox_conc, AVG(d."H2O conc.	")AS h2o_conc,AVG(d."CO mass	")AS co_mass,AVG( d."CO2 mass	")AS co2_mass, AVG(d."NOx mass	")AS nox_mass, AVG(d."Fuel	")AS fuel
+	FROM public."Detections" D, public."Time" h
+	where d."Relative"=h."Second"
+	GROUP BY h."Hour"
+	ORDER BY h."Hour";
+
+--QUERY 1 con Vista Materializzata per Second
+EXPLAIN ANALYZE
+SELECT *
+FROM QUERY1;
+
+--QUERY 1 con Vista Materializzata per Minute
+EXPLAIN ANALYZE
+SELECT h."Minute", AVG(d."co_conc") AS co_conc,AVG(d."co2_conc")AS co2_conc, AVG(d."nox_conc")AS nox_conc, AVG(d."h2o_conc")AS h2o_conc,AVG(d."co_mass")AS co_mass,AVG( d."co2_mass")AS co2_mass, AVG(d."nox_mass")AS nox_mass, AVG(d."fuel")AS fuel
+	FROM QUERY1 d, public."Time" h
+	where d."Second"=h."Second"
+	GROUP BY h."Minute"
+	ORDER BY h."Minute";
+
+--VISTA MATERIALIZZATA QUERY 1 per Hour
+EXPLAIN ANALYZE
+SELECT h."Hour", AVG(d."co_conc") AS co_conc,AVG(d."co2_conc")AS co2_conc, AVG(d."nox_conc")AS nox_conc, AVG(d."h2o_conc")AS h2o_conc,AVG(d."co_mass")AS co_mass,AVG( d."co2_mass")AS co2_mass, AVG(d."nox_mass")AS nox_mass, AVG(d."fuel")AS fuel
+	FROM QUERY1 d, public."Time" h
+	where d."Second"=h."Second"
+	GROUP BY h."Hour"
+	ORDER BY h."Hour";

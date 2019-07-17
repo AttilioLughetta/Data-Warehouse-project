@@ -1,0 +1,144 @@
+-- SEQUENCE: public."Day_idDay_seq"
+
+DROP SEQUENCE IF EXISTS public."Day_idDay_seq";
+
+CREATE SEQUENCE public."Day_idDay_seq";
+
+ALTER SEQUENCE public."Day_idDay_seq"
+    OWNER TO postgres;
+
+-- SEQUENCE: public."Space_idSpace_seq"
+
+DROP SEQUENCE IF EXISTS public."Space_idSpace_seq";
+
+CREATE SEQUENCE public."Space_idSpace_seq";
+
+ALTER SEQUENCE public."Space_idSpace_seq"
+    OWNER TO postgres;
+
+-- Table: public."Day"
+
+DROP TABLE IF EXISTS public."Day";
+
+CREATE TABLE public."Day"
+(
+    "idDay" bigint NOT NULL DEFAULT nextval('"Day_idDay_seq"'::regclass),
+    "Day" timestamp(4) without time zone,
+    "Month" text COLLATE pg_catalog."default",
+    "Year" text COLLATE pg_catalog."default"
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Day"
+    OWNER to postgres;
+
+-- Table: public."Space"
+
+DROP TABLE IF EXISTS public."Space";
+
+CREATE TABLE public."Space"
+(
+    "idSpace" bigint NOT NULL DEFAULT nextval('"Space_idSpace_seq"'::regclass),
+    osm_id bigint,
+    "StreetName" text COLLATE pg_catalog."default",
+    highway text COLLATE pg_catalog."default",
+    "Point" geometry
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Space"
+    OWNER to postgres;
+
+-- Table: public."Time"
+
+DROP TABLE IF EXISTS public."Time";
+
+CREATE TABLE public."Time"
+(
+    "Second" bigint NOT NULL,
+    "Minute" bigint,
+    "Hour" smallint
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Time"
+    OWNER to postgres;
+
+-- Table: public."Distance"
+
+DROP TABLE IF EXISTS public."Distance";
+
+CREATE TABLE public."Distance"
+(
+    "10Km" double precision NOT NULL,
+    "100km" bigint,
+    "1000km" bigint
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Distance"
+    OWNER to postgres;
+
+-- Table: public."Detections"
+
+-- Table: public."Detections"
+
+DROP TABLE IF EXISTS public."Detections";
+
+CREATE TABLE public."Detections"
+(
+    "idTest" bigint,
+    "idDay" bigint,
+    "Relative" bigint,
+    "CO concentration	" real,
+    "CO2 concentration	" real,
+    "NOx concentration	" real,
+    "H2O conc.	" real,
+    "A/F	" real,
+    "Exh. Flow corr[m3/m]" real,
+    "Exh. Flow corr[m3/s]" real,
+    "Exh. Temp.	" real,
+    "Exh. Press." real,
+    "Amb. Temp. " real,
+    "Amb. Press." real,
+    "Amb. Humid." real,
+    "Battery	" real,
+    "CO mass	" double precision,
+    "CO2 mass	" double precision,
+    "NOx mass	" double precision,
+    "Fuel	" double precision,
+    "Power	" double precision,
+    "Speed	" real,
+    "Voltage	" double precision,
+    "Engine coolant temperature by ECU	" bigint,
+    "Engine RPM by ECU	" real,
+    "Vehicle speed by ECU[km/h]	" real,
+    "Vehicle speed by ECU[m/s]	" real,
+    "Distance 	" real,
+    "Intake air temperature by ECU	" real,
+    "MAF air flow rate by ECU[gr\s]	" double precision,
+    "MAF air flow rate by ECU[m3\s]" double precision,
+    "Fuel rail pressure (diesel) by ECU" real,
+    "Barometric pressure by ECU" real,
+    "Ambient air temperature by ECU" real,
+    "idPoint" bigint
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Detections"
+    OWNER to postgres;

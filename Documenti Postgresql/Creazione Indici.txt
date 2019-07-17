@@ -1,0 +1,15 @@
+CREATE OR REPLACE FUNCTION enable_indexes(flag boolean) RETURNS VOID
+AS $$
+BEGIN
+IF(flag = true) THEN
+	CREATE INDEX IF not exists Day_index ON public."Day" using hash("idDay");
+	CREATE INDEX IF not exists Distance_index ON public."Distance" using hash("10Km");
+	CREATE INDEX IF not exists Space_index ON public."Space" using hash("idSpace");
+	CREATE INDEX IF not exists Time_index ON public."Time" using hash("Second");
+ELSE
+	DROP INDEX IF exists Day_index;
+	DROP INDEX IF exists Distance_index;
+	DROP INDEX IF exists Space_index;
+	DROP INDEX IF exists Time_index;
+END IF;
+END; $$ language plpgsql;
