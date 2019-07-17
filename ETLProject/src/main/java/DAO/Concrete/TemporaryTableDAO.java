@@ -72,6 +72,22 @@ public class TemporaryTableDAO{
         }
         return b;
     }
+    public static boolean enableIndexes(boolean flag)
+    {   
+        boolean b = false;
+        CallableStatement cstmt;
+        try {
+            cstmt = connection.prepareCall("{? = CALL enable_indexes(?)}");
+            cstmt.setBoolean(2, flag);
+            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt.executeUpdate();
+            b = cstmt.getBoolean(1);
+        } catch (SQLException e) {
+            System.err.println("impossible to execute enable_indexes() ");
+            e.printStackTrace();
+        }
+        return b;
+    }
     
     public boolean insertValues(String tablename,Queue<String> parameters){
         String sql="INSERT INTO "+tablename+" VALUES ( ";
