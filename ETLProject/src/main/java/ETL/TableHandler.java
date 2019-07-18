@@ -38,16 +38,10 @@ public  class TableHandler{
         System.out.println("Coloumns Added, filling Table");
         //if(tt.csvToTable(name,pathCSV))
         tt.enableIndexes(false);
-<<<<<<< HEAD
         if(tt.manyCsvToTable(name, 12, pathCSV))
             System.out.println("Table correctly filled");
         tt.enableIndexes(true);
         
-=======
-        if(tt.manyCsvToTable(name, 3, pathCSV))
-        System.out.println("Table correctly filled");
-        //tt.enableIndexes(true);
->>>>>>> 14ab5f530ec3a4899f1a1b19d7e1b16dd1ef355f
         //fieldingTable(s, c, name);
         
     }
