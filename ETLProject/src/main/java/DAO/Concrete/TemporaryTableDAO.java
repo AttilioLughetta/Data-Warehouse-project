@@ -62,10 +62,8 @@ public class TemporaryTableDAO{
         boolean b = false;
         CallableStatement cstmt;
         try {
-            cstmt = connection.prepareCall("{? = CALL finish_inserting()}");
-            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt = connection.prepareCall("{ CALL finish_inserting()}");
             cstmt.executeUpdate();
-            b = cstmt.getBoolean(1);
         } catch (SQLException e) {
             System.err.println("impossible to execute finish_inserting() ");
             e.printStackTrace();
