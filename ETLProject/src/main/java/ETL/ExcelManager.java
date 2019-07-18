@@ -206,7 +206,8 @@ public static void excelToManyCSV(XSSFSheet sheet, String path, String name, int
     for( int t=1;t<=number ;t++ )
     {
       path = path2+t+".csv";
-      int times = (int) (Math.pow(10, t-1));
+      int times = 20;
+      //int times = (int) (Math.pow(10, t-1));
       for(int i=1;i<=times;i++)
         ExcelManager.excelToCSV(sheet,path, name, i);
     }

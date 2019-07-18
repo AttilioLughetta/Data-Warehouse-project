@@ -32,15 +32,16 @@ public  class TableHandler{
         
         //ExcelManager.excelToBigCSV(s, pathCSV, name, 35);
         
-        ExcelManager.excelToManyCSV(s, pathCSV, name, 3);
+        ExcelManager.excelToManyCSV(s, pathCSV, name, 12);
         
         addColoumn(s,name,db);
         System.out.println("Coloumns Added, filling Table");
         //if(tt.csvToTable(name,pathCSV))
         tt.enableIndexes(false);
-        if(tt.manyCsvToTable(name, 3, pathCSV))
-        System.out.println("Table correctly filled");
+        if(tt.manyCsvToTable(name, 12, pathCSV))
+            System.out.println("Table correctly filled");
         tt.enableIndexes(true);
+        
         //fieldingTable(s, c, name);
         
     }

@@ -131,6 +131,7 @@ public class TemporaryTableDAO{
         String path2 = path.subSequence(0,path.length()-4).toString(); 
         for(int i= 1; i<=number;i++)
             {
+                System.out.println("Inserting block "+i+" of "+number);
                 path = path2+i+".csv";
                 if(!csvToTable(name, path))
                     return false;
