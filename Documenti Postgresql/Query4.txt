@@ -1,0 +1,42 @@
+--Query 4 Generica Day
+EXPLAIN ANALYZE
+SELECT d."Day",h."Second",AVG(f."Engine coolant temperature by ECU	") AS engine_coolant_temp_ECU, AVG(f."Engine RPM by ECU	") AS engine_rpm_ECU, AVG(f."Vehicle speed by ECU[km/h]	") AS speed_kmh_ECU, AVG(f."Vehicle speed by ECU[m/s]	") AS speed_ms_ECU, AVG(f."Intake air temperature by ECU	") AS air_temp_ECU, AVG(f."MAF air flow rate by ECU[gr\s]	") AS air_flow_rate_grs_ECU, AVG(f."MAF air flow rate by ECU[m3\s]") AS air_flow_rate_m3s_ECU, AVG(f."Fuel rail pressure (diesel) by ECU") AS fuel_rail_ECU, AVG(f."Barometric pressure by ECU") AS barometric_pressure_ECU, AVG(f."Ambient air temperature by ECU") AS ambient_air_ECU
+	FROM public."Detections" f,public."Time" h,public."Day" d
+	WHERE f."Relative"=h."Second" AND f."idDay"=d."idDay"
+	GROUP BY d."Day",h."Second"
+	ORDER BY d."Day",h."Second";
+
+--Query 4 Generica Month
+EXPLAIN ANALYZE
+SELECT d."Year",d."Month",h."Second",AVG(f."Engine coolant temperature by ECU	") AS engine_coolant_temp_ECU, AVG(f."Engine RPM by ECU	") AS engine_rpm_ECU, AVG(f."Vehicle speed by ECU[km/h]	") AS speed_kmh_ECU, AVG(f."Vehicle speed by ECU[m/s]	") AS speed_ms_ECU, AVG(f."Intake air temperature by ECU	") AS air_temp_ECU, AVG(f."MAF air flow rate by ECU[gr\s]	") AS air_flow_rate_grs_ECU, AVG(f."MAF air flow rate by ECU[m3\s]") AS air_flow_rate_m3s_ECU, AVG(f."Fuel rail pressure (diesel) by ECU") AS fuel_rail_ECU, AVG(f."Barometric pressure by ECU") AS barometric_pressure_ECU, AVG(f."Ambient air temperature by ECU") AS ambient_air_ECU
+	FROM public."Detections" f,public."Time" h,public."Day" d
+	WHERE f."Relative"=h."Second" AND f."idDay"=d."idDay"
+	GROUP BY d."Month",d."Year",h."Second"
+	ORDER BY d."Month",d."Year",h."Second";
+
+--Query 4 Generica Year
+EXPLAIN ANALYZE
+SELECT d."Year",h."Second",AVG(f."Engine coolant temperature by ECU	") AS engine_coolant_temp_ECU, AVG(f."Engine RPM by ECU	") AS engine_rpm_ECU, AVG(f."Vehicle speed by ECU[km/h]	") AS speed_kmh_ECU, AVG(f."Vehicle speed by ECU[m/s]	") AS speed_ms_ECU, AVG(f."Intake air temperature by ECU	") AS air_temp_ECU, AVG(f."MAF air flow rate by ECU[gr\s]	") AS air_flow_rate_grs_ECU, AVG(f."MAF air flow rate by ECU[m3\s]") AS air_flow_rate_m3s_ECU, AVG(f."Fuel rail pressure (diesel) by ECU") AS fuel_rail_ECU, AVG(f."Barometric pressure by ECU") AS barometric_pressure_ECU, AVG(f."Ambient air temperature by ECU") AS ambient_air_ECU
+	FROM public."Detections" f,public."Time" h,public."Day" d
+	WHERE f."Relative"=h."Second" AND f."idDay"=d."idDay"
+	GROUP BY d."Year",h."Second"
+	ORDER BY d."Year",h."Second";
+
+--Query 4 per Vista Materializzata Day
+EXPLAIN ANALYZE
+SELECT "Day", "Second",engine_coolant_temp_ECU, engine_rpm_ECU, speed_kmh_ECU, speed_ms_ECU, air_temp_ECU, air_flow_rate_grs_ECU, air_flow_rate_m3s_ECU, fuel_rail_ECU,barometric_pressure_ECU,ambient_air_ECU
+FROM QUERY4;
+
+--Query 4 per Vista Materializzata Month
+EXPLAIN ANALYZE
+SELECT "Year","Month", "Second",AVG(engine_coolant_temp_ECU) AS engine_coolant_temp_ECU, AVG(engine_rpm_ECU) AS engine_rpm_ECU, AVG(speed_kmh_ECU) AS speed_kmh_ECU, AVG(speed_ms_ECU) AS speed_ms_ECU, AVG(air_temp_ECU) AS air_temp_ECU, AVG(air_flow_rate_grs_ECU) AS air_flow_rate_grs_ECU, AVG(air_flow_rate_m3s_ECU) AS air_flow_rate_m3s_ECU, AVG(fuel_rail_ECU) AS fuel_rail_ECU,AVG(barometric_pressure_ECU) AS barometric_pressure_ECU,AVG(ambient_air_ECU) AS ambient_air_ECU
+FROM QUERY4
+GROUP BY "Month","Year","Second"
+ORDER BY "Year","Month","Second";
+
+--Query 4 per Vista Materializzata Year
+EXPLAIN ANALYZE
+SELECT "Year","Second",AVG(engine_coolant_temp_ECU) AS engine_coolant_temp_ECU, AVG(engine_rpm_ECU) AS engine_rpm_ECU, AVG(speed_kmh_ECU) AS speed_kmh_ECU, AVG(speed_ms_ECU) AS speed_ms_ECU, AVG(air_temp_ECU) AS air_temp_ECU, AVG(air_flow_rate_grs_ECU) AS air_flow_rate_grs_ECU, AVG(air_flow_rate_m3s_ECU) AS air_flow_rate_m3s_ECU, AVG(fuel_rail_ECU) AS fuel_rail_ECU,AVG(barometric_pressure_ECU) AS barometric_pressure_ECU,AVG(ambient_air_ECU) AS ambient_air_ECU
+FROM QUERY4
+GROUP BY "Year","Second"
+ORDER BY "Year","Second";

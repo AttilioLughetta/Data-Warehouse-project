@@ -1,0 +1,18 @@
+ETL 
+eliminare colonne:
+Fuel pressure by ECU
+Fuel rail pressure by ECU
+Commanded EGR by ECU
+Fuel rail pressure (absolute) by ECU	
+Engine oil temperature by ECU	
+Engine fuel rate by ECU	
+Actual engine by ECU	
+Engine reference torque by ECU
+(perchè contengono tutti valori 0)
+Se null si elimina la riga:
+absolute
+relative
+Latitude
+Longitude
+Altitude
+distance

@@ -1,0 +1,42 @@
+--Query 6 Generalizzata Day
+EXPLAIN ANALYZE
+SELECT d."Day",AVG(f."A/F	") AS af, AVG(f."Exh. Flow corr[m3/m]") AS exh_flow_corr_m3m, AVG(f."Exh. Flow corr[m3/s]") AS exh_flow_corr_m3s, AVG(f."Exh. Temp.	") AS exh_temp, AVG(f."Exh. Press.") AS exh_press, AVG(f."Amb. Temp. ")AS amb_temp, AVG(f."Amb. Press.")AS amb_press, AVG(f."Amb. Humid.") AS amb_humid
+	FROM public."Detections" f,public."Day" d
+	WHERE f."idDay"=d."idDay"
+	GROUP BY d."Day"
+	ORDER BY d."Day";
+
+--Query 6 Generalizzata Month
+EXPLAIN ANALYZE
+SELECT d."Year",d."Month",AVG(f."A/F	") AS af, AVG(f."Exh. Flow corr[m3/m]") AS exh_flow_corr_m3m, AVG(f."Exh. Flow corr[m3/s]") AS exh_flow_corr_m3s, AVG(f."Exh. Temp.	") AS exh_temp, AVG(f."Exh. Press.") AS exh_press, AVG(f."Amb. Temp. ")AS amb_temp, AVG(f."Amb. Press.")AS amb_press, AVG(f."Amb. Humid.") AS amb_humid
+	FROM public."Detections" f,public."Day" d
+	WHERE f."idDay"=d."idDay"
+	GROUP BY d."Month",d."Year"
+	ORDER BY d."Year",d."Month";
+
+--Query 6 Generalizzata Year
+EXPLAIN ANALYZE
+SELECT d."Year",AVG(f."A/F	") AS af, AVG(f."Exh. Flow corr[m3/m]") AS exh_flow_corr_m3m, AVG(f."Exh. Flow corr[m3/s]") AS exh_flow_corr_m3s, AVG(f."Exh. Temp.	") AS exh_temp, AVG(f."Exh. Press.") AS exh_press, AVG(f."Amb. Temp. ")AS amb_temp, AVG(f."Amb. Press.")AS amb_press, AVG(f."Amb. Humid.") AS amb_humid
+	FROM public."Detections" f,public."Day" d
+	WHERE f."idDay"=d."idDay"
+	GROUP BY d."Year"
+	ORDER BY d."Year";
+
+--Query 6 per Vista Materializzata Day
+EXPLAIN ANALYZE
+SELECT "Day",af,exh_flow_corr_m3m, exh_flow_corr_m3s, exh_temp, exh_press, amb_temp, amb_press, amb_humid
+	FROM QUERY6;
+
+--Query 6 per Vista Materializzata Month
+EXPLAIN ANALYZE
+SELECT "Year","Month",AVG(af) AS af,AVG(exh_flow_corr_m3m) AS exh_flow_corr_m3m, AVG(exh_flow_corr_m3s) AS exh_flow_corr_m3s, AVG(exh_temp) AS exh_temp, AVG(exh_press) AS exh_press, AVG(amb_temp) AS amb_temp, AVG(amb_press) AS amb_press, AVG(amb_humid) AS amb_humid
+	FROM QUERY6
+	GROUP BY "Month","Year"
+	ORDER BY "Year","Month";
+
+--Query 6 per Vista Materializzata Year
+EXPLAIN ANALYZE
+SELECT "Year",AVG(af) AS af,AVG(exh_flow_corr_m3m) AS exh_flow_corr_m3m, AVG(exh_flow_corr_m3s) AS exh_flow_corr_m3s, AVG(exh_temp) AS exh_temp, AVG(exh_press) AS exh_press, AVG(amb_temp) AS amb_temp, AVG(amb_press) AS amb_press, AVG(amb_humid) AS amb_humid
+	FROM QUERY6
+	GROUP BY "Year"
+	ORDER BY "Year";

@@ -1,0 +1,11 @@
+--Query 3 Generica
+EXPLAIN ANALYZE
+SELECT s."highway" AS highway,h."10Km" AS distance, AVG(d."Exh. Temp.	")AS exh_temp, AVG(d."Fuel	") AS fuel
+	FROM public."Detections" d, public."Distance" h, public."Space" s
+	WHERE d."Distance 	"=h."10Km" AND d."idPoint"=s."idSpace"
+	GROUP BY s."highway",h."10Km"
+	ORDER BY s."highway",h."10Km";
+
+--Query 3 PER VISTA MATERIALIZZATA
+EXPLAIN ANALYZE
+SELECT * FROM QUERY3;
